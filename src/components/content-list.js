@@ -89,7 +89,7 @@ class ContentList extends Component {
       window.location.href = "/";
     }
     this.setState({ name: xname });
-    fetch(list_of_category_type(xId, page_num))
+    fetch(list_of_category_type(this.props.xId, page_num))
       .then(blob => blob.json())
       .then(data => {
         if (data.results.length == 0) {
