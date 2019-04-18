@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { all_js_posts, setting_api } from "./../config/config";
+import { category_posts, setting_api } from "./../config/config";
 import { Link } from "react-router-dom";
 import { processContentListApi } from "./drupal-util";
 
@@ -17,14 +17,14 @@ class ContentListBlock extends Component {
 
   componentWillMount = () => {
     let mainmenu = [];
-    fetch(all_js_posts)
+    fetch(category_posts(this.props.tid))
       .then(blob => blob.json())
       .then(data => {
         mainmenu = data.results;
         fetch(setting_api)
           .then(blob3 => blob3.json())
           .then(data3 => {
-            var processedData = processContentListApi(data3, mainmenu);
+            var processedData = processContentListApi(data3, mainmenu, this.props.limit);
             this.setState(processedData);
           });
       });
@@ -33,7 +33,7 @@ class ContentListBlock extends Component {
   render() {
     return (
       <React.Fragment>
-        <h3 className="heading">Popular Posts</h3>
+        <h3 className="heading">{this.props.title}</h3>
         <div className="post-entry-sidebar">
           <ul>
             {this.state.blogs.map((item, index) => (
